@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Task Reminder App</title>
+  <style>
+    body { font-family: Arial, sans-serif; background-color: #f4f4f4; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
+    .container { background-color: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); width: 320px; max-height: 90vh; overflow-y: auto; }
+    h1, h2 { font-size: 1.5em; margin-bottom: 1em; }
+    .field { margin-bottom: 1em; }
+    .field label { display: block; margin-bottom: 0.5em; font-weight: bold; }
+    .field input, .field textarea { width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; }
+    .field textarea { resize: vertical; height: 60px; }
+    button { width: 100%; padding: 10px; background-color: #007bff; color: #fff; border: none; border-radius: 4px; font-size: 1em; cursor: pointer; }
+    button:hover { background-color: #0056b3; }
+    #tasksLog { margin-top: 20px; }
+    #tasksLog ul { list-style-type: none; padding: 0; }
+    #tasksLog li { background-color: #eef; margin-bottom: 8px; padding: 8px; border-radius: 4px; font-size: 0.9em; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Create a Reminder</h1>
+    <div class="field">
+      <label for="title">Task Title</label>
+      <input type="text" id="title" placeholder="Enter task title"/>
+    </div>
+    <div class="field">
+      <label for="description">Description</label>
+      <textarea id="description" placeholder="Enter task description"></textarea>
+    </div>
+    <div class="field">
+      <label for="date">Date</label>
+      <input type="date" id="date"/>
+    </div>
+    <div class="field">
+      <label for="time">Time</label>
+      <input type="time" id="time"/>
+    </div>
+    <button id="scheduleBtn">Schedule Reminder</button>
+    <div id="tasksLog">
+      <h2>Scheduled Tasks</h2>
+      <ul id="tasksList"></ul>
+    </div>
+  </div>
+
+  <!-- Cordova & Push plugin scripts -->
+  <script src="cordova.js"></script>
+  <script src="js/push.js"></script>
+
+  <!-- Task‐logging script -->
+  <script>
+    document.getElementById('scheduleBtn').addEventListener('click', function() {
+      const title = document.getElementById('title').value.trim();
+      const description = document.getElementById('description').value.trim();
+      const date = document.getElementById('date').value;
+      const time = document.getElementById('time').value;
+      if (!title || !date || !time) {
+        alert('Please fill in at least the title, date, and time.');
+        return;
+      }
+      const listItem = document.createElement('li');
+      listItem.textContent = `${date} ${time} — ${title}${description ? ': ' + description : ''}`;
+      document.getElementById('tasksList').appendChild(listItem);
+      document.getElementById('title').value = '';
+      document.getElementById('description').value = '';
+      document.getElementById('date').value = '';
+      document.getElementById('time').value = '';
+    });
+  </script>
+</body>
+</html>
